@@ -17,7 +17,7 @@ var connection = mysql.createConnection({
 });
 
 // connect to the mysql server and sql database
-connection.connect(function(err) {
+connection.connect((err) => {
   if (err) throw err;
   console.log("connected as id " + connection.threadId + "\n");
   // run the start function after the connection is made to prompt the user
@@ -37,12 +37,11 @@ function searchProducts() {
       console.log(`ID| Product Name        | Department       | Price   | Stock 
 ____________________________________________________
                                                     `);
-        for (var i = 0; i < res.length; i++) {      
-      
+       
+       for (var i = 0; i < res.length; i++) {      
       itemIDArray.push(res[i].id);
       // console.log(res[i].item_id + `      ` + res[i].product_name + `     ` + res[i].department_name + `      ` + res[i].price + `      ` + res[i].stock_quantity);
-      console.log(`${res[i].
-        id} | ${res[i].product_name}    | ${res[i].department_name}       | ${res[i].price.toFixed(2)}   | ${res[i].stock_quantity}  `)
+      console.log(`${res[i].id} | ${res[i].product_name}    | ${res[i].department_name}       | ${res[i].price.toFixed(2)}   | ${res[i].stock_quantity}  `)
        
     }
     // console.log(itemIDArray)
@@ -56,6 +55,7 @@ function inquirerFunction() {
 
   inquirer
     .prompt([
+
       {
         message: "What item would you like to purchase?",
         type: "input",
