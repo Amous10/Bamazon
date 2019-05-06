@@ -29,13 +29,12 @@ var itemIDArray = [];
 
 function searchProducts() {
     console.log("Selecting all products...\n");
-    connection.query("SELECT * FROM products", function(err, res) {
+    connection.query("SELECT * FROM products", (err, res) => {
       if (err) throw err;
       // Log all results of the SELECT statement
      
-      // console.log(`Item ID  ` + `Product Name   ` + ` Department Name ` + ` Price ` + ` Stock Quantity`);
-      console.log('*RESPONSE FROM DB*: ', res);
-      console.log(`ID | Product Name     | Department  | Price | Stock 
+      // console.log('*RESPONSE FROM DB*: ', res);
+      console.log(`ID| Product Name        | Department       | Price   | Stock 
 ____________________________________________________
                                                     `);
         for (var i = 0; i < res.length; i++) {      
@@ -43,10 +42,10 @@ ____________________________________________________
       itemIDArray.push(res[i].id);
       // console.log(res[i].item_id + `      ` + res[i].product_name + `     ` + res[i].department_name + `      ` + res[i].price + `      ` + res[i].stock_quantity);
       console.log(`${res[i].
-        id} | ${res[i].product_name}    | ${res[i].department_name}       | ${res[i].price}   | ${res[i].stock_quantity}  `)
+        id} | ${res[i].product_name}    | ${res[i].department_name}       | ${res[i].price.toFixed(2)}   | ${res[i].stock_quantity}  `)
        
     }
-    console.log(itemIDArray)
+    // console.log(itemIDArray)
     // connection.end();
     inquirerFunction();
 
@@ -64,8 +63,8 @@ function inquirerFunction() {
         validate: function (value) {
          var item = parseInt(value);
           if (itemIDArray.includes(item)){
-          
             return true;
+            
           }
             return false;
         }
@@ -83,7 +82,7 @@ function inquirerFunction() {
         }
       }
     ])
-    .then(function (inquirerResponse) {
+    .then((inquirerResponse) => {
       console.log(inquirerResponse);
 
       var selectedProduct = inquirerResponse.ID;
@@ -97,12 +96,12 @@ function inquirerFunction() {
         if (res[0].stock_quantity > selectedStock) {
 
           var newStockQuantity = res[0].stock_quantity - selectedStock;
-          var totalPrice = res[0].price * parseFloat(selectedStock);
+          var totalPrice = res[0].price.toFixed(2) * parseFloat(selectedStock);
 
           connection.query(`UPDATE products SET stock_quantity = ${newStockQuantity} where id = ${selectedProduct}`, (err, res) => {
             if (err) throw err;
 
-            console.log(`Stock Quantity Updated! Thank you for your purchase!\n You're total price is $${totalPrice}`);
+            console.log(`Stock Quantity Updated! Thank you for your purchase!\n You're total price is $${totalPrice.toFixed(2)}`);
             confirmInquirerPrompt();
           })
 
@@ -110,7 +109,7 @@ function inquirerFunction() {
         } else {
 
           console.log("Insufficient quantity! Returning to main page")
-          inquirerFunction();
+          confirmInquirerPrompt();
         }
       });
 
@@ -130,10 +129,10 @@ function confirmInquirerPrompt() {
     ])
     .then((answer) => {
       if (answer.confirm === true) {
-        searchBamazon();
+        inquirerFunction();
 
       } else {
-        console.log("See you next time!")
+        console.log("Thanks for your order. Please come again!")
         connection.end();
       }
     })
