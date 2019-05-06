@@ -33,7 +33,7 @@ Enter 'Node bamazonCustomer.js' into the terminal, and the user will be presente
 
 To purchase products, the user inputs the item number into the terminal. The user is then prompted for the number of units they'd like to order. If enough of the item in inventory to fulfill the order, the order is processed displaying final cost.
 
-![Order Item(s)](Assets/orderItem.gif)
+![Order Item(s)](Assets/orderProduct.gif)
 
 If there is an insufficient inventory amount, the user will be notified.
 
